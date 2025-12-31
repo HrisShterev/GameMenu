@@ -18,6 +18,32 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="souse\Action.cpp" />
+    <ClCompile Include="souse\Assets.cpp" />
+    <ClCompile Include="souse\Entity.cpp" />
+    <ClCompile Include="souse\EntityManager.cpp" />
+    <ClCompile Include="souse\Game1.cpp" />
+    <ClCompile Include="souse\Game2.cpp" />
+    <ClCompile Include="souse\GameEngine.cpp" />
+    <ClCompile Include="souse\main.cpp" />
+    <ClCompile Include="souse\Scene.cpp" />
+    <ClCompile Include="souse\Scene_Menu.cpp" />
+    <ClCompile Include="souse\Vec2.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="souse\Action.h" />
+    <ClInclude Include="souse\Assets.h" />
+    <ClInclude Include="souse\Components.h" />
+    <ClInclude Include="souse\Entity.h" />
+    <ClInclude Include="souse\EntityManager.h" />
+    <ClInclude Include="souse\Game1.h" />
+    <ClInclude Include="souse\Game2.h" />
+    <ClInclude Include="souse\GameEngine.h" />
+    <ClInclude Include="souse\Scene.h" />
+    <ClInclude Include="souse\Scene_menu.h" />
+    <ClInclude Include="souse\Vec2.h" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
@@ -140,32 +166,6 @@
       <AdditionalDependencies>sfml-graphics.lib;sfml-window.lib;sfml-audio.lib;sfml-system.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClCompile Include="Action.cpp" />
-    <ClCompile Include="Assets.cpp" />
-    <ClCompile Include="Components.h" />
-    <ClCompile Include="Entity.cpp" />
-    <ClCompile Include="EntityManager.cpp" />
-    <ClCompile Include="Game1.cpp" />
-    <ClCompile Include="Game2.cpp" />
-    <ClCompile Include="GameEngine.cpp" />
-    <ClCompile Include="main.cpp" />
-    <ClCompile Include="Scene.cpp" />
-    <ClCompile Include="Scene_Menu.cpp" />
-    <ClCompile Include="Vec2.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="Action.h" />
-    <ClInclude Include="Assets.h" />
-    <ClInclude Include="Entity.h" />
-    <ClInclude Include="EntityManager.h" />
-    <ClInclude Include="Game1.h" />
-    <ClInclude Include="Game2.h" />
-    <ClInclude Include="GameEngine.h" />
-    <ClInclude Include="Scene.h" />
-    <ClInclude Include="Scene_menu.h" />
-    <ClInclude Include="Vec2.h" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
