@@ -43,7 +43,7 @@ void GameEngine::init(const std::string& path)
     LoadAssets(path);
 
     m_window.create(sf::VideoMode(1280, 720), "Game");
-    m_window.setFramerateLimit(60);
+    m_window.setFramerateLimit(120);
     m_window.setVerticalSyncEnabled(false);
 
     // Register both scenes
@@ -113,6 +113,11 @@ void GameEngine::sUserInput()
             if (currentScene()->getMouseActionMap().find(button) == currentScene()->getMouseActionMap().end()) { continue; }
             std::string actionType = (event.type == sf::Event::MouseButtonPressed) ? "START" : "END";
             currentScene()->doAction(Action(currentScene()->getMouseActionMap().at(button), actionType));
+        }else if (event.type == sf::Event::TextEntered)
+        {
+            Action a("TEXT", "START");
+            a.setCharacter(static_cast<char>(event.text.unicode));
+            currentScene()->sDoAction(a);
         }
 
     }
@@ -150,6 +155,25 @@ int GameEngine::getDifficulty()
 void GameEngine::setDifficulty(int value)
 {
     m_GameDifficulty = value;
+}
+
+int GameEngine::getMaxPlayersServer()
+{
+    return m_maxPlayersServer;
+}
+void GameEngine::setMaxPlayersServer(int value)
+{
+    m_maxPlayersServer = value;
+}
+
+std::string GameEngine::getServerIp()
+{
+    return m_serverIp;
+}
+
+void GameEngine::setServerIp(const std::string& ip)
+{
+    m_serverIp = ip;
 }
 
 // Returns a reference to the game assets

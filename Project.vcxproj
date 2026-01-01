@@ -29,6 +29,7 @@
     <ClCompile Include="souse\main.cpp" />
     <ClCompile Include="souse\Scene.cpp" />
     <ClCompile Include="souse\Scene_Menu.cpp" />
+    <ClCompile Include="souse\Server.cpp" />
     <ClCompile Include="souse\Vec2.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -42,6 +43,7 @@
     <ClInclude Include="souse\GameEngine.h" />
     <ClInclude Include="souse\Scene.h" />
     <ClInclude Include="souse\Scene_menu.h" />
+    <ClInclude Include="souse\Server.h" />
     <ClInclude Include="souse\Vec2.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
@@ -143,7 +145,7 @@
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>D:\Uroci\C++youtube\biblioteka\SFML-2.6.2\lib</AdditionalLibraryDirectories>
-      <AdditionalDependencies>sfml-graphics-d.lib;sfml-window-d.lib;sfml-audio-d.lib;sfml-system-d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>sfml-graphics-d.lib;sfml-window-d.lib;sfml-audio-d.lib;sfml-system-d.lib;sfml-network-d.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">

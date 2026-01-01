@@ -6,12 +6,17 @@
 class CTransform
 {
 public:
-	Vec2 pos      =	{ 0.0, 0.0 };
+	Vec2 previousPos = { 0.0, 0.0 };
+	Vec2 pos = { 0.0, 0.0 };
 	Vec2 velocity = { 0.0, 0.0 };
-	float angle	  = 0;
-	
+	float angle = 0;
+
+	CTransform(const Vec2& pp, const Vec2& p, const Vec2& v, float a)
+		: previousPos(pp), pos(p), velocity(v), angle(a) {
+	}
 	CTransform(const Vec2& p, const Vec2& v, float a)
-		: pos(p), velocity(v), angle(a) {}
+		: pos(p), velocity(v), angle(a) {
+	}
 
 };
 
@@ -35,7 +40,8 @@ class CCollision
 public:
 	float radius = 0;
 	CCollision(float r)
-		: radius(r) {}
+		: radius(r) {
+	}
 };
 
 class CScore
@@ -43,16 +49,18 @@ class CScore
 public:
 	int score = 0;
 	CScore(int s)
-		: score (s) {}
+		: score(s) {
+	}
 };
 
 class CLifespan
 {
 public:
 	int remaining = 0;
-	int total	  = 0;
+	int total = 0;
 	CLifespan(int total)
-		:remaining(total), total(total) {}
+		:remaining(total), total(total) {
+	}
 };
 
 class CInput
@@ -79,15 +87,18 @@ public:
 
 	// Constructor with position
 	CTransform1(const Vec2& p)
-		: pos(p), velocity(0, 0) {} // Initialize velocity to (0, 0)
+		: pos(p), velocity(0, 0) {
+	} // Initialize velocity to (0, 0)
 
-	// Constructor with position and velocity
+// Constructor with position and velocity
 	CTransform1(const Vec2& p, const Vec2& vel)
-		: pos(p), velocity(vel) {}
+		: pos(p), velocity(vel) {
+	}
 
 	// Constructor with position, velocity, scale, and angle
 	CTransform1(const Vec2& p, const Vec2& vel, const Vec2& s, double a)
-		: pos(p), velocity(vel), scale(s), angle(a) {}
+		: pos(p), velocity(vel), scale(s), angle(a) {
+	}
 };
 
 // Bounding box component: size (width, height)
@@ -99,5 +110,6 @@ public:
 
 	CBoundingBox() {}
 	CBoundingBox(const Vec2& s)
-		: size(s), halfSize(s.x / 2.0f, s.y / 2.0f) {}
+		: size(s), halfSize(s.x / 2.0f, s.y / 2.0f) {
+	}
 };

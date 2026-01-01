@@ -10,13 +10,13 @@
 
 const std::string HIGH_SCORE_FILE = "assets/highscore.txt";
 
-Game::Game(GameEngine* gameEngine)
+Game1::Game1(GameEngine* gameEngine)
 	: Scene(gameEngine)
 {
 	init();
 }
 
-void Game::update() 
+void Game1::update() 
 {
 	m_entities.Update();
 	if (!m_paused)
@@ -54,12 +54,12 @@ void saveHighScore(int highScore) {
 	}
 }
 
-void Game::run()
+void Game1::run()
 {
 
 }
 
-void Game::init()
+void Game1::init()
 {
 	m_HighScore = loadHighScore();
 
@@ -78,12 +78,12 @@ void Game::init()
 	m_DiffText.setFont(m_game->assets().getFont("Tech"));
 }
 
-void Game::onEnd()
+void Game1::onEnd()
 {
 	std::cout << "Game Over!" << std::endl;
 }
 
-void Game::spawnPlayer()
+void Game1::spawnPlayer()
 {
 	//todo: finish all properties of the player with the correct values from the config
 
@@ -103,7 +103,7 @@ void Game::spawnPlayer()
 	m_player = entity;
 }
 
-void Game::spawnEnemy()
+void Game1::spawnEnemy()
 {
 	auto entity = m_entities.addEntity("enemy");
 
@@ -140,7 +140,7 @@ void Game::spawnEnemy()
 	m_lastEnemySpawnTime = m_currentFrame;
 }
 
-void Game::spawnSmallEnemies(std::shared_ptr<Entity> e)
+void Game1::spawnSmallEnemies(std::shared_ptr<Entity> e)
 {
 	int numPoints = e->cShape->circle.getPointCount();
 	float radius = 30.0f; // Distance from the center for spawning
@@ -168,7 +168,7 @@ void Game::spawnSmallEnemies(std::shared_ptr<Entity> e)
 	}
 }
 
-void Game::spawnBullet(std::shared_ptr<Entity> entity, const Vec2 & target)
+void Game1::spawnBullet(std::shared_ptr<Entity> entity, const Vec2 & target)
 {
 
 	auto bullet = m_entities.addEntity("bullet");
@@ -182,7 +182,7 @@ void Game::spawnBullet(std::shared_ptr<Entity> entity, const Vec2 & target)
 	bullet->cLifespan = std::make_shared<CLifespan>(100);
 }
 
-void Game::spawnSpecialWeapon(std::shared_ptr<Entity> entity)
+void Game1::spawnSpecialWeapon(std::shared_ptr<Entity> entity)
 {
 	m_lastSpecialTime = 0;
 	int numPoints = m_player->cShape->circle.getPointCount() + 10;
@@ -213,7 +213,7 @@ void Game::spawnSpecialWeapon(std::shared_ptr<Entity> entity)
 	}
 }
 
-void Game::sMovement()
+void Game1::sMovement()
 {
 	if (m_player->cTransform->pos.x <= m_player->cShape->circle.getRadius())
 	{
@@ -239,7 +239,7 @@ void Game::sMovement()
 	}
 }
 
-void Game::sLifeSpan()
+void Game1::sLifeSpan()
 {
 	for (auto& e : m_entities.getEntities())
 	{
@@ -273,7 +273,7 @@ void Game::sLifeSpan()
 	
 }
 
-void Game::sCollision()
+void Game1::sCollision()
 {
 	// Check bullet collisions with enemies and small enemies
 	for (auto& b : m_entities.getEntities("bullet"))
@@ -381,7 +381,7 @@ void Game::sCollision()
 
 }
 
-void Game::sEnemySpawner()
+void Game1::sEnemySpawner()
 {
 	if (m_currentFrame - m_lastEnemySpawnTime == 120 - m_game->getDifficulty() * 15)
 	{
@@ -389,7 +389,7 @@ void Game::sEnemySpawner()
 	}
 }
 
-void Game::sRender()
+void Game1::sRender()
 {
 	for (auto e : m_entities.getEntities())
 	{
@@ -406,7 +406,7 @@ void Game::sRender()
 	m_game->window().draw(m_DiffText);
 }
 
-void Game::sUserInput()
+void Game1::sUserInput()
 {
 	Vec2 velocity(0, 0);
 	float speed = 3.0f;
@@ -419,7 +419,7 @@ void Game::sUserInput()
 	m_player->cTransform->velocity = velocity;
 }
 
-void Game::sDoAction(const Action& action)
+void Game1::sDoAction(const Action& action)
 {
 	if (action.name() == "UP") m_player->cInput->up = (action.type() == "START");
 	if (action.name() == "DOWN") m_player->cInput->down = (action.type() == "START");

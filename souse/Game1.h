@@ -6,7 +6,7 @@
 
 #include <SFML/Graphics.hpp>
 
-class Game : public Scene
+class Game1 : public Scene
 {
 	EntityManager       m_entities;
 	sf::Text			m_text;
@@ -39,7 +39,7 @@ class Game : public Scene
 
 public:
 
-	Game(GameEngine* gameEngine = nullptr);
+	Game1(GameEngine* gameEngine = nullptr);
 
 	void update() override;
 	void run();

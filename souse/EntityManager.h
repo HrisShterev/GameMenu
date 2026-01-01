@@ -20,7 +20,8 @@ public:
 	void Update();
 
 	std::shared_ptr<Entity> addEntity(const std::string& tag);
+	std::shared_ptr<Entity> addEntity(const size_t id, const std::string& tag);
 
-	const EntityVec & getEntities();
-	const EntityVec& getEntities(const std::string & tag);
+	const EntityVec& getEntities();
+	const EntityVec& getEntities(const std::string& tag);
 };

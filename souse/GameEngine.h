@@ -11,6 +11,8 @@ class GameEngine
 {
 protected:
 	int				 m_GameDifficulty = 0;
+	int				 m_maxPlayersServer = 0;
+	std::string      m_serverIp = "";
 	sf::RenderWindow m_window;
 	Assets			 m_assets;
 	std::string      m_currentScene;
@@ -39,5 +41,9 @@ public:
 	const Assets& assets() const;
 	int getDifficulty();
 	void setDifficulty(int value);
+	int getMaxPlayersServer();
+	void setMaxPlayersServer(int value);
+	std::string getServerIp();
+	void setServerIp(const std::string& ip);
 	bool isRunning();
 };

@@ -12,6 +12,16 @@ Action::Action(const std::string& name, const std::string& type)
 {
 }
 
+void Action::setCharacter(char c)
+{
+    m_character = c;
+}
+
+char Action::character() const
+{
+    return m_character;
+}
+
 // Getter for action name
 const std::string& Action::name() const
 {

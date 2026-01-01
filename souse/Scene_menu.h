@@ -15,11 +15,20 @@ protected:
 	std::string				 m_title;
 	std::vector<std::string> m_menuStrings;
 	sf::Text				 m_menuText;
+	sf::Text				 m_titleText;
 	std::vector <sf::Text>	 m_difficultyText;
+	std::vector <sf::Text>	 m_serverOrClientText;
 	size_t					 m_selectedMenuIndex = 0;
 	size_t					 m_selectedDifficultyIndex = 0;
+	size_t					 m_selectedMultiplayerIndex = 0;
 	bool					 m_onDif = false;
-	size_t					 m_GameIndex = 0;
+	bool					 m_onMul = false;
+	bool                     m_selectedServer = false;
+	bool                     m_selectedClient = false;
+	std::string				 m_inputBuffer;
+	sf::Text				 m_inputText;
+	const size_t			 m_GameIndex = 0;
+	const size_t			 m_multiplayerIndex = 1;
 
 	void init();
 	void onEnd();
