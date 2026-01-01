@@ -48,6 +48,7 @@ private:
     bool isRunning = false;
     bool startGame = false;
     bool startGamePending = false;
+    bool startGameSent = false;
 
 public:
     Server(GameEngine* gameEngine = nullptr);

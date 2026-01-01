@@ -3,16 +3,17 @@
 
 void Server::init()
 {
-	keyRegisterAction(sf::Keyboard::Escape, "QUIT");
+    keyRegisterAction(sf::Keyboard::Escape, "QUIT");
 
     socket.bind(54000);
     socket.setBlocking(false);
+
     std::cout << "Server running on port 54000\n";
 }
 
 Server::Server(GameEngine* gameEngine)
     : Scene(gameEngine)
-{ 
+{
     maxPpl = m_game->getMaxPlayersServer();
     init();
 }
@@ -21,111 +22,77 @@ Server::~Server() {}
 
 void Server::update()
 {
-    static sf::Clock tick;
-    if (tick.getElapsedTime().asMilliseconds() < 16)
-        return;
-    tick.restart();
-
     sf::Packet packet;
     sf::IpAddress sender;
     unsigned short port;
 
-    // PROCESS ALL INCOMING PACKETS THIS FRAME
+    // =========================
+    // RECEIVE PACKETS
+    // =========================
     while (socket.receive(packet, sender, port) == sf::Socket::Done)
     {
         int packetType;
         packet >> packetType;
 
+        auto key = std::make_pair(sender, port);
+
+        // -------- JOIN REQUEST --------
         if (packetType == PacketType::JoinRequest)
         {
             float x, y;
             int clientTempId;
             packet >> clientTempId >> x >> y;
 
-            auto key = std::make_pair(sender, port);
-
             if (curPpl >= maxPpl)
             {
-                std::cout << "Max players reached! Rejecting client.\n";
-                sf::Packet rejectPacket;
-                rejectPacket << PacketType::MaxPlayers;
-                socket.send(rejectPacket, sender, port);
+                sf::Packet reject;
+                reject << PacketType::MaxPlayers;
+                socket.send(reject, sender, port);
                 continue;
             }
 
-            // New player
             if (players.find(key) == players.end())
             {
-                curPpl++;
-
                 Player p;
                 p.id = nextId++;
                 p.position = { x, y };
                 p.lastActive.restart();
 
                 players[key] = p;
+                curPpl++;
 
                 std::cout << "Player connected! ID = " << p.id << "\n";
 
-                if (startGamePending)
-                {
-                    startGame = true;
-                    startGamePending = false;
-                }
-
-
-                if (curPpl == maxPpl && !startGamePending && !startGame)
-                {
+                if (curPpl == maxPpl && !startGame)
                     startGamePending = true;
-                }
 
-                // Send ID to client
                 sf::Packet idPacket;
                 idPacket << PacketType::AssignId << p.id;
+
+                if(curPpl == maxPpl && startGameSent)
+                    idPacket << PacketType::StartGame;;
+
                 socket.send(idPacket, sender, port);
             }
         }
 
-        if (packetType == PacketType::Ping)
+        // -------- PING --------
+        else if (packetType == PacketType::Ping)
         {
-
-            sf::Packet pong;
-            pong << PacketType::Pong;
-
             sf::Int32 timestamp;
             packet >> timestamp;
-            pong << timestamp;
 
+            sf::Packet pong;
+            pong << PacketType::Pong << timestamp;
             socket.send(pong, sender, port);
         }
-        if (packetType == PacketType::PlayerKilled)
-        {
 
-            int id;
-            packet >> id;
-            std::cout << "Player " << id << " killed" << std::endl;
-            for (auto it = players.begin(); it != players.end(); )
-            {
-                if (it->second.id == id)
-                {
-                    it = players.erase(it);
-                    curPpl--;
-                    break;
-                }
-                else
-                {
-                    ++it;
-                }
-            }
-        }
-        if (packetType == PacketType::PlayerUpdate)
+        // -------- PLAYER UPDATE --------
+        else if (packetType == PacketType::PlayerUpdate)
         {
             float x, y;
             int tempId;
-
             packet >> tempId >> x >> y;
-
-            auto key = std::make_pair(sender, port);
 
             auto it = players.find(key);
             if (it != players.end())
@@ -133,26 +100,46 @@ void Server::update()
                 it->second.position = { x, y };
                 it->second.lastActive.restart();
             }
-
         }
-        if (packetType == PacketType::BulletSpawn)
+
+        // -------- PLAYER KILLED --------
+        else if (packetType == PacketType::PlayerKilled)
+        {
+            int id;
+            packet >> id;
+
+            for (auto it = players.begin(); it != players.end(); ++it)
+            {
+                if (it->second.id == id)
+                {
+                    std::cout << "Player " << id << " killed\n";
+                    players.erase(it);
+                    curPpl--;
+                    break;
+                }
+            }
+        }
+
+        // -------- BULLET --------
+        else if (packetType == PacketType::BulletSpawn)
         {
             Bullet b;
             packet >> b.owner.id >> b.position.x >> b.position.y;
-
             bullets.push_back(b);
         }
     }
+
+    // =========================
+    // REMOVE TIMED-OUT PLAYERS
+    // =========================
     sf::Packet disconnectPacket;
 
-    // REMOVE INACTIVE PLAYERS
     for (auto it = players.begin(); it != players.end(); )
     {
         if (it->second.lastActive.getElapsedTime().asSeconds() > 10.f)
         {
             disconnectPacket << PacketType::DisconectedUser << it->second.id;
-
-            std::cout << "Player " << it->second.id << " timed out.\n";
+            std::cout << "Player " << it->second.id << " timed out\n";
             it = players.erase(it);
             curPpl--;
         }
@@ -168,12 +155,25 @@ void Server::update()
             socket.send(disconnectPacket, p.first.first, p.first.second);
     }
 
+    // =========================
+    // START GAME DECISION
+    // =========================
+    if (startGamePending)
+    {
+        startGame = true;
+        startGamePending = false;
+    }
 
-    // BROADCAST P STATE — ONE PACKET PER CLIENT
+    bool sendStartGame = startGame && !startGameSent;
+
+    // =========================
+    // BROADCAST WORLD STATE
+    // =========================
     for (auto& p : players)
     {
         sf::Packet world;
 
+        // All players
         for (auto& pl : players)
         {
             world << PacketType::PlayerUpdate
@@ -182,11 +182,11 @@ void Server::update()
                 << pl.second.position.y;
         }
 
-        if (startGame)
-        {
+        // Start game ONCE for ALL clients
+        if (sendStartGame)
             world << PacketType::StartGame;
-        }
 
+        // Bullets
         for (auto& b : bullets)
         {
             world << PacketType::BulletSpawn
@@ -198,11 +198,13 @@ void Server::update()
         socket.send(world, p.first.first, p.first.second);
     }
 
-    bullets.clear();
+    if (sendStartGame)
+        startGameSent = true;
 
+    bullets.clear();
 }
 
-void Server::sDoAction(const Action& action) 
+void Server::sDoAction(const Action& action)
 {
     if (action.name() == "QUIT")
     {
@@ -211,13 +213,22 @@ void Server::sDoAction(const Action& action)
     }
 }
 
-void Server::sRender()
+void Server::sRender() 
 {
-
+    for(int i = 0; i < players.size(); i++)
+    {
+        sf::Text playerText;
+        playerText.setFont(m_game->assets().getFont("Tech"));
+        playerText.setCharacterSize(36);
+        playerText.setFillColor(sf::Color::White);
+        playerText.setPosition(100, 100 + i * 50);
+        auto it = players.begin();
+        std::advance(it, i);
+        playerText.setString("Player ID: " + std::to_string(it->second.id) + 
+                             " Position: (" + std::to_string(static_cast<int>(it->second.position.x)) + 
+                             ", " + std::to_string(static_cast<int>(it->second.position.y)) + ")");
+        m_game->window().draw(playerText);
+	}
 }
 
-void Server::onEnd()
-{
-
-}
-
+void Server::onEnd() {}
