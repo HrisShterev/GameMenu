@@ -8,7 +8,12 @@ void Server::init()
     socket.bind(54000);
     socket.setBlocking(false);
 
-    std::cout << "Server running on port 54000\n";
+    titleText.setFont(m_game->assets().getFont("Tech"));
+    titleText.setCharacterSize(48);
+    titleText.setFillColor(sf::Color::Yellow);
+    titleText.setString("Server - port: 54000, max players: " + std::to_string(maxPpl));
+    titleText.setOrigin(0.f, 0.f);
+    titleText.setPosition(50.f, 50.f);
 }
 
 Server::Server(GameEngine* gameEngine)
@@ -215,13 +220,15 @@ void Server::sDoAction(const Action& action)
 
 void Server::sRender() 
 {
+    m_game->window().draw(titleText);
+
     for(int i = 0; i < players.size(); i++)
     {
         sf::Text playerText;
         playerText.setFont(m_game->assets().getFont("Tech"));
         playerText.setCharacterSize(36);
         playerText.setFillColor(sf::Color::White);
-        playerText.setPosition(100, 100 + i * 50);
+        playerText.setPosition(100, 150 + i * 50);
         auto it = players.begin();
         std::advance(it, i);
         playerText.setString("Player ID: " + std::to_string(it->second.id) + 

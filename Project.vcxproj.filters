@@ -12,6 +12,12 @@
     <Filter Include="Header Files">
       <UniqueIdentifier>{dcc57a28-c042-4d08-ba7d-001471ed1529}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Scenes">
+      <UniqueIdentifier>{4012163c-2d83-410c-8d4e-9a893097877a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Scenes">
+      <UniqueIdentifier>{500523da-63e4-4b95-84d7-8b3df6a59212}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="souse\Action.cpp">
@@ -26,29 +32,29 @@
     <ClCompile Include="souse\EntityManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="souse\Game1.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="souse\Game2.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="souse\GameEngine.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="souse\main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="souse\Scene.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="souse\Scene_Menu.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="souse\Vec2.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="souse\Server.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="souse\Scene_Menu.cpp">
+      <Filter>Source Files\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="souse\Game2.cpp">
+      <Filter>Source Files\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="souse\Game1.cpp">
+      <Filter>Source Files\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="souse\Scene.cpp">
+      <Filter>Source Files\Scenes</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -67,26 +73,26 @@
     <ClInclude Include="souse\EntityManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="souse\Game1.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="souse\Game2.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="souse\GameEngine.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="souse\Scene.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="souse\Scene_menu.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="souse\Vec2.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="souse\Server.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="souse\Scene_menu.h">
+      <Filter>Header Files\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="souse\Scene.h">
+      <Filter>Header Files\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="souse\Game2.h">
+      <Filter>Header Files\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="souse\Game1.h">
+      <Filter>Header Files\Scenes</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

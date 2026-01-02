@@ -41,6 +41,8 @@ private:
     std::map<std::pair<sf::IpAddress, unsigned short>, Player> players;
     std::vector<Bullet> bullets;
 
+	sf::Text titleText;
+
     sf::UdpSocket socket;
     int nextId = 1;
     int maxPpl;
