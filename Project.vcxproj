@@ -19,32 +19,32 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="souse\Action.cpp" />
-    <ClCompile Include="souse\Assets.cpp" />
-    <ClCompile Include="souse\Entity.cpp" />
-    <ClCompile Include="souse\EntityManager.cpp" />
-    <ClCompile Include="souse\Game1.cpp" />
-    <ClCompile Include="souse\Game2.cpp" />
-    <ClCompile Include="souse\GameEngine.cpp" />
-    <ClCompile Include="souse\main.cpp" />
-    <ClCompile Include="souse\Scene.cpp" />
-    <ClCompile Include="souse\Scene_Menu.cpp" />
-    <ClCompile Include="souse\Server.cpp" />
-    <ClCompile Include="souse\Vec2.cpp" />
+    <ClInclude Include="sourse\Action.h" />
+    <ClInclude Include="sourse\Assets.h" />
+    <ClInclude Include="sourse\Components.h" />
+    <ClInclude Include="sourse\Entity.h" />
+    <ClInclude Include="sourse\EntityManager.h" />
+    <ClInclude Include="sourse\Game1.h" />
+    <ClInclude Include="sourse\Game2.h" />
+    <ClInclude Include="sourse\GameEngine.h" />
+    <ClInclude Include="sourse\Scene.h" />
+    <ClInclude Include="sourse\Scene_menu.h" />
+    <ClInclude Include="sourse\Server.h" />
+    <ClInclude Include="sourse\Vec2.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="souse\Action.h" />
-    <ClInclude Include="souse\Assets.h" />
-    <ClInclude Include="souse\Components.h" />
-    <ClInclude Include="souse\Entity.h" />
-    <ClInclude Include="souse\EntityManager.h" />
-    <ClInclude Include="souse\Game1.h" />
-    <ClInclude Include="souse\Game2.h" />
-    <ClInclude Include="souse\GameEngine.h" />
-    <ClInclude Include="souse\Scene.h" />
-    <ClInclude Include="souse\Scene_menu.h" />
-    <ClInclude Include="souse\Server.h" />
-    <ClInclude Include="souse\Vec2.h" />
+    <ClCompile Include="sourse\Action.cpp" />
+    <ClCompile Include="sourse\Assets.cpp" />
+    <ClCompile Include="sourse\Entity.cpp" />
+    <ClCompile Include="sourse\EntityManager.cpp" />
+    <ClCompile Include="sourse\Game1.cpp" />
+    <ClCompile Include="sourse\Game2.cpp" />
+    <ClCompile Include="sourse\GameEngine.cpp" />
+    <ClCompile Include="sourse\main.cpp" />
+    <ClCompile Include="sourse\Scene.cpp" />
+    <ClCompile Include="sourse\Scene_Menu.cpp" />
+    <ClCompile Include="sourse\Server.cpp" />
+    <ClCompile Include="sourse\Vec2.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
