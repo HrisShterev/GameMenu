@@ -215,7 +215,7 @@ void Scene_Menu::sDoAction(const Action& action)
                     m_game->setDifficulty(m_selectedDifficultyIndex + 1);
                     m_hasEnded = true;
                 }
-                if (m_onMul)
+                else if (m_onMul)
                 {
                     if (m_selectedMultiplayerIndex == 0)
                     {
@@ -225,6 +225,10 @@ void Scene_Menu::sDoAction(const Action& action)
                     {
                         m_selectedClient = true;
                     }
+                }
+                else if (m_selectedMenuIndex == 2)
+                {
+                    m_game->quit();
                 }
             }
         }
