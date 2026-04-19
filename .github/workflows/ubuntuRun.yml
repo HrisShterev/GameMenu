@@ -1,0 +1,23 @@
+name: Build
+
+on:
+  push:
+    branches: [ Ubuntu, master ]
+  pull_request:
+    branches: [ Ubuntu, master ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Install dependencies
+      run: sudo apt install libsfml-dev xvfb -y
+
+    - name: Compile
+      run: g++ src/*.cpp -o Game -std=c++17 -Llib -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio -lsfml-network -Wl,-rpath,'$ORIGIN/lib'
+
+    - name: Run
+      run: xvfb-run -a timeout 3 ./Game || true
