@@ -23,7 +23,7 @@ lib/
 Then compile with:
 
 ```bash
-g++ src/*.cpp -o Game -std=c++17 -Isfml/include -Llib -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio -lsfml-network -Wl,-rpath,'$ORIGIN/lib'
+g++ src/*.cpp -o Game -std=c++17 -Ilib/include -Llib -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio -lsfml-network -Wl,-rpath,'$ORIGIN/lib''
 ```
 
 ## Running
