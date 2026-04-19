@@ -13,6 +13,7 @@ Make sure the `lib/` folder contains the following files:
 
 ```
 lib/
+├── /include
 ├── libsfml-graphics.so.2.6.1
 ├── libsfml-window.so.2.6.1
 ├── libsfml-system.so.2.6.1
@@ -23,7 +24,7 @@ lib/
 Then compile with:
 
 ```bash
-g++ src/*.cpp -o Game -std=c++17 -Ilib/include -Llib -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio -lsfml-network -Wl,-rpath,'$ORIGIN/lib''
+g++ src/*.cpp -o Game -std=c++17 -Ilib/include -Llib -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio -lsfml-network -Wl,-rpath,'$ORIGIN/lib'
 ```
 
 ## Running
@@ -32,7 +33,7 @@ g++ src/*.cpp -o Game -std=c++17 -Ilib/include -Llib -lsfml-graphics -lsfml-wind
 ./Game
 ```
 
-> Make sure to run the game from the project root directory so it can find the `assets/` folder.
+> Make sure to run the game from the project root directory
 
 ## Project Structure
 
