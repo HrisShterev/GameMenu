@@ -13,7 +13,7 @@ Make sure the `lib/` folder contains the following files:
 
 ```
 lib/
-├── /include
+├── include/
 ├── libsfml-graphics.so.2.6.1
 ├── libsfml-window.so.2.6.1
 ├── libsfml-system.so.2.6.1
