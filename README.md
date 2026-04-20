@@ -9,40 +9,18 @@ A C++ game built with SFML.
 
 ## Building
 
-Make sure the `lib/` folder contains the following files:
+> Make sure you build the game from the project root directory
 
-```
-lib/
-├── include/
-├── libsfml-graphics.so.2.6.1
-├── libsfml-window.so.2.6.1
-├── libsfml-system.so.2.6.1
-├── libsfml-audio.so.2.6.1
-└── libsfml-network.so.2.6.1
-```
-
-Then compile with:
+Compile with:
 
 ```bash
-g++ src/*.cpp -o Game -std=c++17 -Ilib/include -Llib -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio -lsfml-network -Wl,-rpath,'$ORIGIN/lib'
+g++ src/*.cpp -o game -std=c++17 -Ilib/include -Llib -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio -lsfml-network -Wl,-rpath,'$ORIGIN/lib'
 ```
 
 ## Running
 
 ```bash
-./Game
+./game
 ```
 
-> Make sure to run the game from the project root directory
 
-## Project Structure
-
-```
-GameMenu/
-├── Game              ← compiled executable
-├── assets/           ← game assets (textures, fonts, config)
-├── src/              ← source files
-├── sfml/
-│   └── include/      ← SFML headers
-└── lib/              ← SFML shared libraries
-```
