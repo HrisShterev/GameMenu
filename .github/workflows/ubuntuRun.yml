@@ -2,10 +2,8 @@ name: Linux test build
 
 on:
   push:
-    branches: [ Ubuntu, master ]
   pull_request:
-    branches: [ Ubuntu, master ]
-
+  
 jobs:
   build:
     runs-on: ubuntu-latest
