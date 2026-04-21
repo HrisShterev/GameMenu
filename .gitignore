@@ -363,7 +363,7 @@ MigrationBackup/
 FodyWeavers.xsd
 
 #ignore windows dll`s
-GameMenu/lib/windows/
+lib/windows/
 
 # ignore compiled game
 game
