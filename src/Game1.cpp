@@ -93,7 +93,7 @@ void Game1::spawnPlayer()
 
 	float mx = m_game->window().getSize().x / 2.0f;
 	float my = m_game->window().getSize().y / 2.0f;
-	//Give thsi entity a Transform so it spawns at (200,200) with velocity(1,1) and angle 0
+	//Give this entity a Transform so it spawns at (200,200) with velocity(0,0) and angle 0
 	entity->cTransform = std::make_shared<CTransform>(Vec2(mx, my), Vec2(0.0f, 0.0f), 0.0f);
 	
 	//radius 32, 8 sides, dark grey fill, red outline, 
@@ -121,7 +121,7 @@ void Game1::spawnEnemy()
 	static std::mt19937 gen(rd());
 
 	// Generate a random velocity between -5 and 5, excluding 0
-	std::uniform_int_distribution<int> velocityDist(-5, 5);
+	std::uniform_int_distribution<int> velocityDist(-3, 3);
 	float sx = 0, sy = 0;
 	while (sx == 0) sx = velocityDist(gen);
 	while (sy == 0) sy = velocityDist(gen);
@@ -383,7 +383,7 @@ void Game1::sCollision()
 
 void Game1::sEnemySpawner()
 {
-	if (m_currentFrame - m_lastEnemySpawnTime == 120 - m_game->getDifficulty() * 15)
+	if (m_currentFrame - m_lastEnemySpawnTime == 240 - m_game->getDifficulty() * 15)
 	{
 		spawnEnemy();
 	}
@@ -409,7 +409,7 @@ void Game1::sRender()
 void Game1::sUserInput()
 {
 	Vec2 velocity(0, 0);
-	float speed = 3.0f;
+	float speed = 3.5f;
 
 	if (m_player->cInput->up)    velocity.y -= speed;
 	if (m_player->cInput->down)  velocity.y += speed;
@@ -438,7 +438,7 @@ void Game1::sDoAction(const Action& action)
 
 	if (action.name() == "M_RIGHT" && action.type() == "START")
 	{
-		if (m_lastSpecialTime > 200 + m_game->getDifficulty() * 100)
+		if (m_lastSpecialTime > 200 + m_game->getDifficulty() * 200)
 		{
 			spawnSpecialWeapon(m_player);
 		}

@@ -4,6 +4,7 @@
 #include <iostream>
 #include "Game1.h"
 #include "Game2.h"
+#include "Game3.h"
 #include "Server.h"
 
 Scene_Menu::Scene_Menu(GameEngine* gameEngine)
@@ -23,9 +24,10 @@ void Scene_Menu::init()
     keyRegisterAction(sf::Keyboard::Left, "LEFT");
     keyRegisterAction(sf::Keyboard::Enter, "ENTER");
     keyRegisterAction(sf::Keyboard::Escape, "ESCAPE");
-    // Example menu options
+
     m_menuStrings.push_back("Start Game1");
     m_menuStrings.push_back("Start Game2");
+    m_menuStrings.push_back("Start Game3");
     m_menuStrings.push_back("Exit");
 
     m_difficultyText.resize(4);
@@ -228,6 +230,10 @@ void Scene_Menu::sDoAction(const Action& action)
                 }
                 else if (m_selectedMenuIndex == 2)
                 {
+                    m_hasEnded = true;
+                }
+                else if (m_selectedMenuIndex == 3)
+                {
                     m_game->quit();
                 }
             }
@@ -297,6 +303,10 @@ void Scene_Menu::onEnd()
         {
             m_game->changeScene("Game", std::make_shared<Game2>(m_game), true);
         }
+    }
+    else if (m_selectedMenuIndex == 2)
+    {
+        m_game->changeScene("Game", std::make_shared<Game3>(m_game), true);
     }
 }
 
