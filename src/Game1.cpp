@@ -69,12 +69,15 @@ void Game1::init()
 	keyRegisterAction(sf::Keyboard::W, "UP");
 	keyRegisterAction(sf::Keyboard::D, "RIGHT");
 	keyRegisterAction(sf::Keyboard::A, "LEFT");
+
 	keyRegisterAction(sf::Keyboard::Escape, "ESCAPE");
 	mouseRegisterAction(sf::Mouse::Button::Right, "M_RIGHT");
 	mouseRegisterAction(sf::Mouse::Button::Left, "M_LEFT");
 
 	spawnPlayer();
+	m_text.setPosition(0,0);
 	m_text.setFont(m_game->assets().getFont("Tech"));
+	m_DiffText.setPosition(0, 40);
 	m_DiffText.setFont(m_game->assets().getFont("Tech"));
 }
 
@@ -400,7 +403,6 @@ void Game1::sRender()
 		m_game->window().draw(e->cShape->circle);
 	}
 	m_text.setString(" High score: " + std::to_string(m_HighScore) + " Score: " + std::to_string(m_score));
-	m_DiffText.setPosition(0, 40);
 	m_DiffText.setString(" Difficulty: " + std::to_string(m_game->getDifficulty()));
 	m_game->window().draw(m_text);
 	m_game->window().draw(m_DiffText);

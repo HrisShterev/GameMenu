@@ -13,7 +13,7 @@ class Game1 : public Scene
 	sf::Text			m_DiffText;
 	int					m_score = 0;
 	int					m_HighScore = 0;
-	int					m_currentFrame = 0;
+	int					m_currentFrame = 1;
 	int					m_lastEnemySpawnTime = 0;
 	int					m_lastSpecialTime = 0;
 	bool				m_paused = false;

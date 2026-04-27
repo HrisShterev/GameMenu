@@ -9,9 +9,12 @@
 class Game3 : public Scene
 {
 	EntityManager       m_entities;
-	int					m_currentFrame = 0;
+	sf::Text			m_scoreText;
+	int					m_currentFrame = 1;
 	int                 m_players_count = 0;
+	int 				m_lastEnemySpawnTime = 0;
 	bool				m_paused = false;
+	int					m_score[2] = {0, 0};
 
 	std::shared_ptr<Entity> m_players [2];
 
@@ -23,8 +26,11 @@ class Game3 : public Scene
 	void sRender();
 	void sCollision();
 	void sUserInput();
+	void sLifeSpan();
+	void sEnemySpawner();
 
 	void spawnPlayers();
+	void spawnEnemy();
 
 public:
 

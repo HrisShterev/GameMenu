@@ -19,6 +19,8 @@ void Game3::update()
 	{
 		sUserInput();
 		sMovement();
+		sLifeSpan();
+		sEnemySpawner();
 		sCollision();
 		m_currentFrame++;
 	}
@@ -47,6 +49,9 @@ void Game3::init()
 	
 	keyRegisterAction(sf::Keyboard::Escape, "ESCAPE");
 	
+	m_scoreText.setFont(m_game->assets().getFont("Tech"));
+	m_scoreText.setPosition(m_game->window().getSize().x / 2 - 160, 0);
+
 	spawnPlayers();
 }
 
@@ -57,7 +62,7 @@ void Game3::onEnd()
 
 void Game3::spawnPlayers()
 {
-	auto entity = m_entities.addEntity("player1");
+	auto entity = m_entities.addEntity("players");
 
 	float mx = m_game->window().getSize().x - 32.0f;
 	float my = m_game->window().getSize().y - 32.0f;
@@ -70,7 +75,7 @@ void Game3::spawnPlayers()
 	entity->cCollision = std::make_shared<CCollision>(entity->cShape->circle.getRadius()-2);
 	m_players[0] = entity;
 
-	entity = m_entities.addEntity("player2");
+	entity = m_entities.addEntity("players");
 
 	mx = 32.0f;
 	my = 32.0f;
@@ -82,6 +87,70 @@ void Game3::spawnPlayers()
 	entity->cInput = std::make_shared<CInput>();
 	entity->cCollision = std::make_shared<CCollision>(entity->cShape->circle.getRadius()-2);
 	m_players[1] = entity;
+}
+
+void Game3::spawnEnemy()
+{
+	auto entity = m_entities.addEntity("enemy");
+
+	// Set the enemy's radius
+	float radius = 32.0f;
+
+	// Ensure the enemy spawns fully within screen bounds
+	int windowWidth = m_game->window().getSize().x;
+	int windowHeight = m_game->window().getSize().y;
+	float ex = radius + rand() % (windowWidth - 2 * static_cast<int>(radius));
+	float ey = radius + rand() % (windowHeight - 2 * static_cast<int>(radius));
+
+	// Setup a random number generator
+	static std::random_device rd;
+	static std::mt19937 gen(rd());
+
+	// Generate a random velocity between -5 and 5, excluding 0
+	std::uniform_int_distribution<int> velocityDist(-3, 3);
+	float sx = 0, sy = 0;
+	while (sx == 0) sx = velocityDist(gen);
+	while (sy == 0) sy = velocityDist(gen);
+
+	// Generate a random number of vertices for the enemy polygon, e.g., between 3 and 10
+	std::uniform_int_distribution<int> vertexDist(3, 6);
+	sf::Uint8 ver = static_cast<sf::Uint8>(vertexDist(gen));
+
+	// Assign components to the enemy entity
+	entity->cLifespan = std::make_shared<CLifespan>(2000);
+	entity->cTransform = std::make_shared<CTransform>(Vec2(ex, ey), Vec2(sx, sy), 0.0f);
+	entity->cShape = std::make_shared<CShape>(radius,ver, sf::Color(0, 0, 0), sf::Color(0, 0, 255), 4);
+	entity->cCollision = std::make_shared<CCollision>(radius - 2);
+	entity->cScore = std::make_shared<CScore>(10);
+
+	// Record the spawn time of the enemy
+	m_lastEnemySpawnTime = m_currentFrame;
+}
+
+void Game3::sLifeSpan()
+{
+	for (auto& e : m_entities.getEntities("enemy"))
+	{
+		e->cLifespan->remaining--;
+		if (e->cLifespan->remaining <= 0)
+		{
+			e->destroy();
+		}
+	}
+}
+
+void Game3::sEnemySpawner()
+{
+	if(m_currentFrame % 100 == 0) 
+	{
+		m_score[0]++;
+		m_score[1]++;
+	}
+
+	if (m_currentFrame - m_lastEnemySpawnTime == 200)
+	{
+		spawnEnemy();
+	}
 }
 
 void Game3::sMovement()
@@ -115,32 +184,80 @@ void Game3::sMovement()
 
 void Game3::sCollision()
 {
-	for(int i = 0; i< m_players_count; i++)
-	{
-			for (auto& p : m_entities.getEntities("player1"))
-			{
-				for (auto& e : m_entities.getEntities("player2"))
-				{
-					float pex = p->cTransform->pos.x - e->cTransform->pos.x;
-					float pey = p->cTransform->pos.y - e->cTransform->pos.y;
-					float PEdistanceSquared = pex * pex + pey * pey;
-					float PEcombinedRadius = p->cCollision->radius + e->cCollision->radius;
+	float pex = m_players[0]->cTransform->pos.x - m_players[1]->cTransform->pos.x;
+	float pey = m_players[0]->cTransform->pos.y - m_players[1]->cTransform->pos.y;
+	float PEdistanceSquared = pex * pex + pey * pey;
+	float PEcombinedRadius = m_players[0]->cCollision->radius + m_players[1]->cCollision->radius;
 
-					if (PEdistanceSquared < PEcombinedRadius * PEcombinedRadius)
-					{
-						p->cTransform->pos.x = m_game->window().getSize().x - 32.0f;
-						p->cTransform->pos.y = m_game->window().getSize().x - 32.0f;
-						p->cTransform->velocity.x = 0;
-						p->cTransform->velocity.y = 0;
-						e->cTransform->pos.x = 32.0f;
-						e->cTransform->pos.y = 32.0f;
-						e->cTransform->velocity.x = 0;
-						e->cTransform->velocity.y = 0;
-						std::cout << "Player Collision!" << std::endl;
-						break;
-					}
-				}
-			}
+	if (PEdistanceSquared < PEcombinedRadius * PEcombinedRadius)
+	{
+		m_players[0]->cTransform->pos.x = m_game->window().getSize().x - 32.0f;
+		m_players[0]->cTransform->pos.y = m_game->window().getSize().x - 32.0f;
+		m_players[0]->cTransform->velocity.x = 0;
+		m_players[0]->cTransform->velocity.y = 0;
+		m_players[1]->cTransform->pos.x = 32.0f;
+		m_players[1]->cTransform->pos.y = 32.0f;
+		m_players[1]->cTransform->velocity.x = 0;
+		m_players[1]->cTransform->velocity.y = 0;
+		m_score[0] = 0;
+		m_score[1] = 0;
+		std::cout << "Player Collision!" << std::endl;
+	}
+
+	for (auto& e : m_entities.getEntities("enemy"))
+	{
+		float pex = m_players[0]->cTransform->pos.x - e->cTransform->pos.x;
+		float pey = m_players[0]->cTransform->pos.y - e->cTransform->pos.y;
+		float PEdistanceSquared = pex * pex + pey * pey;
+		float PEcombinedRadius = m_players[0]->cCollision->radius + e->cCollision->radius;
+
+		float pex1 = m_players[1]->cTransform->pos.x - e->cTransform->pos.x;
+		float pey1 = m_players[1]->cTransform->pos.y - e->cTransform->pos.y;
+		float PEdistanceSquared1 = pex1 * pex1 + pey1 * pey1;
+		float PEcombinedRadius1 = m_players[1]->cCollision->radius + e->cCollision->radius;
+
+		if (PEdistanceSquared < PEcombinedRadius * PEcombinedRadius)
+		{
+			e->destroy();
+			float startX = m_game->window().getSize().x - 32.0f;
+			float startY = m_game->window().getSize().x - 32.0f;
+			m_players[0]->cTransform->pos.x = startX;
+			m_players[0]->cTransform->pos.y = startY;
+			m_players[0]->cTransform->velocity.x = 0;
+			m_players[0]->cTransform->velocity.y = 0;
+			m_score[0] = 0;
+			break;
+		}
+
+		if (PEdistanceSquared1 < PEcombinedRadius1 * PEcombinedRadius1)
+		{
+			e->destroy();
+			float startX = 32.0f;
+			float startY = 32.0f;
+			m_players[1]->cTransform->pos.x = startX;
+			m_players[1]->cTransform->pos.y = startY;
+			m_players[1]->cTransform->velocity.x = 0;
+			m_players[1]->cTransform->velocity.y = 0;
+			m_score[1] = 0; 
+			break;
+		}
+	}
+
+	for (auto& e : m_entities.getEntities("enemy"))
+	{
+		float radius = e->cShape->circle.getRadius();
+		float winWidth = m_game->window().getSize().x;
+		float winHeight = m_game->window().getSize().y;
+
+		if (e->cTransform->pos.x <= radius || e->cTransform->pos.x >= winWidth - radius)
+		{
+			e->cTransform->velocity.x = -e->cTransform->velocity.x; 
+		}
+
+		if (e->cTransform->pos.y <= radius || e->cTransform->pos.y >= winHeight - radius)
+		{
+			e->cTransform->velocity.y = -e->cTransform->velocity.y;
+		}
 	}
 }
 
@@ -154,6 +271,8 @@ void Game3::sRender()
 
 		m_game->window().draw(e->cShape->circle);
 	}
+	m_scoreText.setString("Score P1: " + std::to_string(m_score[0]) + "   Score P2: " + std::to_string(m_score[1]));
+	m_game->window().draw(m_scoreText);
 }
 
 void Game3::sUserInput()
