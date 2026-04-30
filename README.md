@@ -1,26 +1,38 @@
 # GameMenu
-
 A C++ game built with SFML.
 
 ## Dependencies
-
-- g++ with C++17 support
-- SFML 2.6.1 (included in `lib/`)
+- CMake 3.16 or higher
+- A C++17 compatible compiler (g++ on Linux, MSVC or MinGW on Windows)
+- SFML (Linux only, installed via apt)
 
 ## Building
 
-> Make sure you build the game from the project root directory
+Make sure you are in the project root directory for all commands.
 
-Compile with:
-
+### Linux
 ```bash
-g++ src/*.cpp -o game -std=c++17 -Ilib/include -Llib -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio -lsfml-network -Wl,-rpath,'$ORIGIN/lib'
+sudo apt install cmake libsfml-dev -y
+cmake -B build
+cmake --build build
+```
+
+### Windows
+```bash
+cmake -B build
+cmake --build build --config Release
 ```
 
 ## Running
 
+After building, the executable will be in the project root on Linux, and in `Release\` on Windows.
+
+### Linux
 ```bash
-./game
+./Game
 ```
 
-
+### Windows
+```bash
+.\Release\Game.exe
+```
