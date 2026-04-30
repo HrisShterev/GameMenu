@@ -10,6 +10,7 @@ class Game3 : public Scene
 {
 	EntityManager       m_entities;
 	sf::Text			m_scoreText;
+	sf::Text 			pauseText;
 	int					m_currentFrame = 1;
 	int                 m_players_count = 0;
 	int 				m_lastEnemySpawnTime = 0;

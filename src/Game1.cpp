@@ -74,6 +74,17 @@ void Game1::init()
 	mouseRegisterAction(sf::Mouse::Button::Right, "M_RIGHT");
 	mouseRegisterAction(sf::Mouse::Button::Left, "M_LEFT");
 
+	keyRegisterAction(sf::Keyboard::P, "PAUSE");
+
+	pauseText.setFont(m_game->assets().getFont("Tech"));
+    pauseText.setString("PAUSED");
+    pauseText.setCharacterSize(60);
+    pauseText.setFillColor(sf::Color::White);
+    pauseText.setPosition( 
+		m_game->window().getSize().x / 2 - pauseText.getGlobalBounds().width / 2,
+        m_game->window().getSize().y / 2 - 30
+    );
+
 	spawnPlayer();
 	m_text.setPosition(0,0);
 	m_text.setFont(m_game->assets().getFont("Tech"));
@@ -110,36 +121,53 @@ void Game1::spawnEnemy()
 {
 	auto entity = m_entities.addEntity("enemy");
 
-	// Set the enemy's radius
 	float radius = 32.0f;
 
-	// Ensure the enemy spawns fully within screen bounds
 	int windowWidth = m_game->window().getSize().x;
 	int windowHeight = m_game->window().getSize().y;
-	float ex = radius + rand() % (windowWidth - 2 * static_cast<int>(radius));
-	float ey = radius + rand() % (windowHeight - 2 * static_cast<int>(radius));
 
-	// Setup a random number generator
 	static std::random_device rd;
 	static std::mt19937 gen(rd());
 
-	// Generate a random velocity between -5 and 5, excluding 0
+	std::uniform_real_distribution<float> xDist(radius, windowWidth - radius);
+	std::uniform_real_distribution<float> yDist(radius, windowHeight - radius);
+
+	// Minimum safe distance from either player before spawning
+	float safeDistance = 150.0f;
+
+	float ex, ey;
+	int maxAttempts = 100;
+	do
+	{
+		ex = xDist(gen);
+		ey = yDist(gen);
+		maxAttempts--;
+
+		bool tooCloseToAnyPlayer = false;
+		float dx = ex - m_player->cTransform->pos.x;
+		float dy = ey - m_player->cTransform->pos.y;
+		if (dx * dx + dy * dy < safeDistance * safeDistance)
+		{
+			tooCloseToAnyPlayer = true;
+		}
+		if (!tooCloseToAnyPlayer) break;
+
+	} while (maxAttempts > 0);
+
 	std::uniform_int_distribution<int> velocityDist(-3, 3);
 	float sx = 0, sy = 0;
 	while (sx == 0) sx = velocityDist(gen);
 	while (sy == 0) sy = velocityDist(gen);
-
-	// Generate a random number of vertices for the enemy polygon, e.g., between 3 and 10
+	
 	std::uniform_int_distribution<int> vertexDist(3, 6);
 	sf::Uint8 ver = static_cast<sf::Uint8>(vertexDist(gen));
 
-	// Assign components to the enemy entity
+	entity->cLifespan = std::make_shared<CLifespan>(2000);
 	entity->cTransform = std::make_shared<CTransform>(Vec2(ex, ey), Vec2(sx, sy), 0.0f);
-	entity->cShape = std::make_shared<CShape>(radius,ver, sf::Color(0, 0, 0), sf::Color(0, 0, 255), 4);
+	entity->cShape = std::make_shared<CShape>(radius, ver, sf::Color(0, 0, 0), sf::Color(0, 0, 255), 4);
 	entity->cCollision = std::make_shared<CCollision>(radius - 2);
 	entity->cScore = std::make_shared<CScore>(10);
 
-	// Record the spawn time of the enemy
 	m_lastEnemySpawnTime = m_currentFrame;
 }
 
@@ -406,6 +434,8 @@ void Game1::sRender()
 	m_DiffText.setString(" Difficulty: " + std::to_string(m_game->getDifficulty()));
 	m_game->window().draw(m_text);
 	m_game->window().draw(m_DiffText);
+
+	if (m_paused) m_game->window().draw(pauseText);
 }
 
 void Game1::sUserInput()
@@ -427,6 +457,9 @@ void Game1::sDoAction(const Action& action)
 	if (action.name() == "DOWN") m_player->cInput->down = (action.type() == "START");
 	if (action.name() == "LEFT") m_player->cInput->left = (action.type() == "START");
 	if (action.name() == "RIGHT") m_player->cInput->right = (action.type() == "START");
+
+	if (action.name() == "PAUSE" && action.type() == "END") m_paused = !m_paused;
+
 	if (action.name() == "ESCAPE")
 	{
 		m_hasEnded = true;

@@ -11,6 +11,7 @@ class Game1 : public Scene
 	EntityManager       m_entities;
 	sf::Text			m_text;
 	sf::Text			m_DiffText;
+	sf::Text 			pauseText;
 	int					m_score = 0;
 	int					m_HighScore = 0;
 	int					m_currentFrame = 1;
