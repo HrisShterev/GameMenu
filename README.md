@@ -14,7 +14,9 @@ A C++ game built with SFML.
 Make sure you are in the project root directory for all commands.
 
 ```bash
+#intall cmake and sfml if not already installed
 sudo apt install cmake libsfml-dev -y
+
 cmake -B build
 cmake --build build
 ```
