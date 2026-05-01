@@ -6,33 +6,39 @@ A C++ game built with SFML.
 - A C++17 compatible compiler (g++ on Linux, MSVC or MinGW on Windows)
 - SFML (Linux only, installed via apt)
 
-## Building
+
+## Linux config
+
+### Building
 
 Make sure you are in the project root directory for all commands.
 
-### Linux
 ```bash
 sudo apt install cmake libsfml-dev -y
 cmake -B build
 cmake --build build
 ```
 
-### Windows
-```bash
-cmake -B build
-cmake --build build --config Release
-```
+### Running
 
-## Running
-
-After building, the executable will be in the project root on Linux, and in `Release\` on Windows.
-
-### Linux
 ```bash
 ./Game
 ```
 
-### Windows
+
+## Windows config
+
+### Building
+
+```bash
+# Install CMake if not already installed
+choco install cmake
+
+cmake -B build
+cmake --build build --config Release
+```
+
+### Running
 ```bash
 .\Release\Game.exe
 ```
