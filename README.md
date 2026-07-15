@@ -33,7 +33,7 @@ cmake --build build
 ### Building
 
 ```bash
-# Install CMake from [https://cmake.org/download/](https://cmake.org/download/) if not already installed
+# Install CMake from https://cmake.org/download/ if not already installed
 
 cmake -B build
 cmake --build build --config Release
