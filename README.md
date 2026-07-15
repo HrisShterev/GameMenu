@@ -9,9 +9,30 @@ A C++ game built with SFML.
 
 ## Linux config
 
+### Prerequisites
+
+Because this project automatically downloads and builds SFML from source, Linux users must install a few native development packages (such as X11, OpenGL, FreeType, and Udev) before compiling.
+
+On **Ubuntu / Debian / Mint / WSL**, install these packages by running the following command in your terminal:
+
+```bash
+sudo apt update && sudo apt install -y \
+  libudev-dev \
+  libopenal-dev \
+  libvorbis-dev \
+  libflac-dev \
+  libgl1-mesa-dev \
+  libegl1-mesa-dev \
+  libxrandr-dev \
+  libxcursor-dev \
+  libxinerama-dev \
+  libxi-dev \
+  libfreetype-dev
+```
+
 ### Building
 
-Make sure you are in the project root directory for all commands.
+Make sure you are in the project root directory for these commands.
 
 ```bash
 #intall cmake if not already installed
