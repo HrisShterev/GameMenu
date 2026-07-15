@@ -4,7 +4,7 @@ A C++ game built with SFML.
 ## Dependencies
 - CMake 3.16 or higher
 - A C++17 compatible compiler (g++ on Linux, MSVC or MinGW on Windows)
-- SFML (Linux only, installed via apt)
+- SFML 2.6.2
 
 
 ## Linux config
@@ -14,8 +14,8 @@ A C++ game built with SFML.
 Make sure you are in the project root directory for all commands.
 
 ```bash
-#intall cmake and sfml if not already installed
-sudo apt install cmake libsfml-dev -y
+#intall cmake if not already installed
+sudo apt install cmake
 
 cmake -B build
 cmake --build build
@@ -33,8 +33,7 @@ cmake --build build
 ### Building
 
 ```bash
-# Install CMake if not already installed
-choco install cmake
+# Install CMake from [https://cmake.org/download/](https://cmake.org/download/) if not already installed
 
 cmake -B build
 cmake --build build --config Release
